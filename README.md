@@ -7,7 +7,6 @@ another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
 
 ## Tutorials
 
-
 - \[**Medium**\] [**How To Secure A Spring Boot App With Keycloak
   **](https://medium.com/@ivangfr/how-to-secure-a-spring-boot-app-with-keycloak-5a931ee12c5a)
 - \[**Medium**\] [**Integrating GitHub as a Social Identity Provider in Keycloak
@@ -264,6 +263,3 @@ access token issued by `Keycloak`.
   npm install
   ```
 
-#   S p r i n g b o o t - R e a c t J S - k e y c l o a k 
- 
- 
