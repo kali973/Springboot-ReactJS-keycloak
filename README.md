@@ -1,12 +1,17 @@
 # springboot-react-keycloak
 
-The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with PKCE). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
+The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with
+PKCE). `movies-app` consists of two applications: one is
+a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and
+another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
 
 ## Tutorials
 
-- \[**Medium**\] [**How To Secure A Spring Boot App With Keycloak**](https://medium.com/@ivangfr/how-to-secure-a-spring-boot-app-with-keycloak-5a931ee12c5a)
-- \[**Medium**\] [**Integrating GitHub as a Social Identity Provider in Keycloak**](https://medium.com/@ivangfr/integrating-github-as-a-social-identity-provider-in-keycloak-982f521a622f)
 
+- \[**Medium**\] [**How To Secure A Spring Boot App With Keycloak
+  **](https://medium.com/@ivangfr/how-to-secure-a-spring-boot-app-with-keycloak-5a931ee12c5a)
+- \[**Medium**\] [**Integrating GitHub as a Social Identity Provider in Keycloak
+  **](https://medium.com/@ivangfr/integrating-github-as-a-social-identity-provider-in-keycloak-982f521a622f)
 
 ## Project diagram
 
@@ -16,14 +21,15 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 - ### movies-api
 
-  `Spring Boot` Web Java backend application that exposes a REST API to manage **movies**. Its secured endpoints can just be accessed if an access token (JWT) issued by `Keycloak` is provided.
-  
+  `Spring Boot` Web Java backend application that exposes a REST API to manage **movies**. Its secured endpoints can
+  just be accessed if an access token (JWT) issued by `Keycloak` is provided.
+
   `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
   `movie-api` has the following endpoints
 
   | Endpoint                                                          | Secured | Roles                       |
-  |-------------------------------------------------------------------|---------|-----------------------------|
+    |-------------------------------------------------------------------|---------|-----------------------------|
   | `GET /api/userextras/me`                                          | Yes     | `MOVIES_MANAGER` and `USER` |
   | `POST /api/userextras/me -d {avatar}`                             | Yes     | `MOVIES_MANAGER` and `USER` | 
   | `GET /api/movies`                                                 | No      |                             |
@@ -34,8 +40,11 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 - ### movies-ui
 
-  `ReactJS` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT) that is generated when `user` / `admin` logs in.
-  
+  `ReactJS` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to
+  access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled
+  by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT)
+  that is generated when `user` / `admin` logs in.
+
   `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Prerequisites
@@ -47,16 +56,19 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 - [`jq`](https://stedolan.github.io/jq)
 - [`OMDb API`](https://www.omdbapi.com/) KEY
 
-  To use the `Wizard` option to search and add a movie, you need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
+  To use the `Wizard` option to search and add a movie, you need to get an API KEY from OMDb API. In order to do it,
+  access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
-  Once you have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content 
+  Once you have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the
+  following content
   ```
   REACT_APP_OMDB_API_KEY=<your-api-key>
   ```
 
 ## PKCE
 
-As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key for Code Exchange`) since version `7.0.0`, we are using it in this project. 
+As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key for Code Exchange`) since
+version `7.0.0`, we are using it in this project.
 
 ## Start Environment
 
@@ -74,38 +86,43 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 - **movies-api**
 
-  - Open a terminal and navigate to `springboot-react-keycloak/movies-api` folder
+    - Open a terminal and navigate to `springboot-react-keycloak/movies-api` folder
 
-  - Run the following `Maven` command to start the application
-    ```
-    ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
-    ```
+    - Run the following `Maven` command to start the application
+      ```
+      ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
+      ```
 
-    Once the startup finishes, `KeycloakInitializerRunner.java` class will run and initialize `company-services` realm in `Keycloak`. Basically, it will create:
-    - Realm: `company-services`
-    - Client: `movies-app`
-    - Client Roles: `MOVIES_MANAGER` and `USER`
-    - Two users
-      - `admin`: with roles `MANAGE_MOVIES` and `USER`
-      - `user`: only with role `USER`
+      Once the startup finishes, `KeycloakInitializerRunner.java` class will run and initialize `company-services` realm
+      in `Keycloak`. Basically, it will create:
+        - Realm: `company-services`
+        - Client: `movies-app`
+        - Client Roles: `MOVIES_MANAGER` and `USER`
+        - Two users
+            - `admin`: with roles `MANAGE_MOVIES` and `USER`
+            - `user`: only with role `USER`
 
-  - **Social Identity Providers** like `Google`, `Facebook`, `Twitter`, `GitHub`, etc can be configured by following the steps described in [`Keycloak` Documentation](https://www.keycloak.org/docs/latest/server_admin/#social-identity-providers).
-    
-    I've also written the article [**Integrating GitHub as a Social Identity Provider in Keycloak**](https://medium.com/@ivangfr/integrating-github-as-a-social-identity-provider-in-keycloak-982f521a622f) where I show, step-by-step, how we can integrate GitHub.
+    - **Social Identity Providers** like `Google`, `Facebook`, `Twitter`, `GitHub`, etc can be configured by following
+      the steps described
+      in [`Keycloak` Documentation](https://www.keycloak.org/docs/latest/server_admin/#social-identity-providers).
+
+      I've also written the article [**Integrating GitHub as a Social Identity Provider in Keycloak
+      **](https://medium.com/@ivangfr/integrating-github-as-a-social-identity-provider-in-keycloak-982f521a622f) where I
+      show, step-by-step, how we can integrate GitHub.
 
 - **movies-ui**
 
-  - Open another terminal and navigate to `springboot-react-keycloak/movies-ui` folder
+    - Open another terminal and navigate to `springboot-react-keycloak/movies-ui` folder
 
-  - Run the command below if you are running the application for the first time
-    ```
-    npm install
-    ```
+    - Run the command below if you are running the application for the first time
+      ```
+      npm install
+      ```
 
-  - Run the `npm` command below to start the application
-    ```
-    npm start
-    ```
+    - Run the `npm` command below to start the application
+      ```
+      npm start
+      ```
 
 ## Applications URLs
 
@@ -127,7 +144,9 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 ## Testing movies-api endpoints
 
-You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, you need to inform an access token issued by `Keycloak`.
+You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the
+secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, you need to inform an
+access token issued by `Keycloak`.
 
 ### Getting Access Token
 
@@ -207,7 +226,8 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Click `Authorize` button.
 
-- In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field. Then, click `Authorize` and `Close` to finalize.
+- In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in
+  the `Value` field. Then, click `Authorize` and `Close` to finalize.
 
 - Done! You can now access the secured endpoints
 
@@ -226,7 +246,8 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`
 
-- To stop and remove docker-compose containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below
+- To stop and remove docker-compose containers, network and volumes, go to a terminal and,
+  inside `springboot-react-keycloak` root folder, run the command below
   ```
   docker-compose down -v
   ```
@@ -242,5 +263,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ncu -u
   npm install
   ```
-#   S p r i n g b o o t - R e a c t J S - k e y c l o a k  
+
+#   S p r i n g b o o t - R e a c t J S - k e y c l o a k 
+ 
  
