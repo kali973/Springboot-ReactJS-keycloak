@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-
   mongodb:
     image: mongo:6.0.4
     container_name: mongodb
@@ -11,7 +10,6 @@ services:
       test: echo 'db.stats().ok' | mongosh localhost:27017/moviesdb --quiet
     security_opt:
       - no-new-privileges:true
-    read_only: true
 
   postgres:
     image: postgres:15.2
@@ -26,7 +24,6 @@ services:
       test: "pg_isready -U postgres"
     security_opt:
       - no-new-privileges:true
-    read_only: true
 
   keycloak:
     image: quay.io/keycloak/keycloak:21.1.1
@@ -47,6 +44,23 @@ services:
       - postgres
     healthcheck:
       test: "curl -f http://localhost:8080/health/ready || exit 1"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+
+  dependency-track:
+    image: owasp/dependency-track
+    container_name: dependency-track
+    ports:
+      - "9082:9080"
+    environment:
+      - DB_CONNECTION_STRING=jdbc:postgresql://postgres:5432/dependencytrack
+      - DB_USERNAME=dependencytrack
+      - DB_PASSWORD=password
+    depends_on:
+      - postgres
+    healthcheck:
+      test: "curl -f http://localhost:8082/api/v1/health || exit 1"
     security_opt:
       - no-new-privileges:true
     read_only: true
