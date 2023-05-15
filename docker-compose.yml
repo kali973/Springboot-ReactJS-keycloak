@@ -46,7 +46,6 @@ services:
       test: "curl -f http://localhost:8080/health/ready || exit 1"
     security_opt:
       - no-new-privileges:true
-    read_only: true
 
   dependency-track:
     image: owasp/dependency-track
